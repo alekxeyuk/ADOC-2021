@@ -49,12 +49,12 @@ procedure main(bool part_2 = false)
             if part_2 and length(won) == length(cards) then exit end if
             int pos = find(numbers[N], cards[C_N])
             if pos then
-                cards[C_N][pos] = -1
+                cards[C_N][pos] = 0
                 int {x, y}  = pos_to_crds(pos)
                 int r_s = sum(matrix_row(cards[C_N], y))
                 int c_s = sum(matrix_col(cards[C_N], x))
-                if r_s == -5 or c_s == -5 then
-                    answer = sum(filter(cards[C_N], ">=", 0)) * numbers[N]
+                if not (r_s and c_s) then
+                    answer = sum(cards[C_N]) * numbers[N]
                     won = append(won, C_N)
                     done = iff(part_2 ? false : true)
                     if not part_2 then exit end if
