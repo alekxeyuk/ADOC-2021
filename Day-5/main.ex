@@ -1,15 +1,24 @@
-﻿function parse_line(sequence line)
-    return apply(split(match_replace(" -> ", line, ",", 0), ","), to_integer)
+﻿constant GRID_SIZE = 1000
+sequence  grid
+
+function crds_to_pos(integer x, integer y)
+    return x + (y - 1) * GRID_SIZE
 end function
 
 function check_point(integer x, integer y)
-    string key = sprintf("%03d%03d", {x, y})
-    int point_c = getdd(key, 0)
-    setd(key, point_c + 1)
+    int key = crds_to_pos(x, y)
+    int point_c = grid[key]
+    grid[key] += 1
     return point_c == 1
 end function
 
+function parse_line(sequence line)
+    return sq_add(scanf(line, "%d,%d -> %d,%d")[1], 1)
+end function
+
 procedure main(bool part_2 = false)
+    grid = repeat(0, GRID_SIZE*GRID_SIZE)
+    
     object f = get_text("input.txt", GT_LF_STRIPPED)
     if f=-1 then
         puts(1, "Can't find input.txt file")
@@ -43,9 +52,7 @@ procedure main(bool part_2 = false)
     end for
     
     printf(1, "Answer is: %d\n", counter)
-    destroy_dict(1)
 end procedure
 
 main()
 main(true)
-
