@@ -13,6 +13,12 @@ procedure main(integer days)
     
     for d=1 to days do
         state[mod((d + 7), 9) + 1] += state[mod(d, 9) + 1]
+        -- Left rotate of the array, with addition of the 1 days fishs to the 7 days fishs
+        /*
+        b = a[1]
+        a[1..9] = append(a[2..9], b)
+        a[7] += b
+        */
     end for
     
     printf(1, "Answer is: %d\n", sum(state))
