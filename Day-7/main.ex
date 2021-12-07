@@ -1,8 +1,17 @@
-﻿function part_2_dist(integer x)
-    return (power(x, 2) + x) / 2
+﻿function part1(integer x, integer median, integer _)
+    return abs(x - median)
 end function
 
-procedure main(bool part_2 = false)
+function part2(integer x, integer _, integer average)   
+    int d = part1(x, average, _)
+    return (power(d, 2) + d) / 2
+end function
+
+function seq_call(integer x, integer rid, integer median, integer average)
+    return call_func(rid, {x, median, average})
+end function
+
+procedure main(integer rid)
     object f = get_text("input.txt", GT_LF_STRIPPED)
     if f=-1 then
         puts(1, "Can't find input.txt file")
@@ -13,19 +22,10 @@ procedure main(bool part_2 = false)
     int len     = length(inp)
     int median  = inp[len / 2]
     int average = floor(sum(inp) / len)
-    int answer  = 0
-    
-    for i=1 to len do
-        if part_2 then
-            answer += part_2_dist(abs(inp[i] - average))
-        else
-            answer += abs(inp[i] - median)
-        end if
-    end for
-    
+    int answer  = sum(apply(true, seq_call, {inp, rid, median, average}))
+
     printf(1, "Answer is: %d\n", answer)
 end procedure
 
-main()
-main(true)
-
+main(part1)
+main(part2)
